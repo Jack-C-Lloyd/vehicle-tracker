@@ -1,27 +1,30 @@
 package CI646;
 
-import CI646.tracker.Vehicle;
 import CI646.tracker.VehicleFactory;
 import CI646.tracker.VehicleTracker;
-import CI646.tracker.in.GPSReceiver;
+import CI646.tracker.in.GuardedGPSReceiver;
 import CI646.tracker.out.VehicleGUI;
 import CI646.tracker.in.Receiver;
+import CI646.tracker.in.TargetReceiver;
 
-import java.util.Map;
+import java.awt.Rectangle;
+import java.util.concurrent.Semaphore;
 
 public class Main {
+	public static void main(String[] args) {
+		final int numOfVehicles = 10;
+		final Rectangle criticalArea = new Rectangle(10, 10, 200, 200);
 
-    public static void main(String[] args) {
-        VehicleTracker tracker = new VehicleTracker(VehicleFactory.getVehicles(10));
-        Map<String, Vehicle> locs = tracker.getLocations();
-        for(String id: locs.keySet()) {
-            System.out.println(tracker.getLocation(id));
-        }
-        VehicleGUI gui = new VehicleGUI(tracker);
-        Receiver r;
-        for(int i=0; i<10; i++) {
-            r = new GPSReceiver(tracker, "VEHICLE"+i);
-            r.start();
-        }
-    }
+		VehicleTracker tracker = new VehicleTracker(VehicleFactory.getVehicles(numOfVehicles));
+		new VehicleGUI(tracker);
+
+		Semaphore semaphore = new Semaphore(3);
+
+		for (int i = 0; i < numOfVehicles; i++) {
+			Receiver receiver = new GuardedGPSReceiver(tracker, VehicleFactory.PREFIX + i, criticalArea, semaphore);
+			receiver.start();
+		}
+		
+		new TargetReceiver(tracker).start();
+	}
 }

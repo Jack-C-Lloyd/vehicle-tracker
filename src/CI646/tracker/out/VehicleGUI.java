@@ -58,6 +58,12 @@ public class VehicleGUI extends JFrame {
             for(String id: locations.keySet()) {
                 p = tracker.getLocation(id);
                 if(p != null) {
+                    if (id.equals(tracker.getTargetID())) {
+                        g.setColor(Color.RED);
+                    } else {
+                        g.setColor(Color.BLACK);
+                    }
+
                     g.fillOval(p.x, p.y, DOT_SIZE, DOT_SIZE);
                     g.drawString(id.substring(id.length() - 1), p.x+DOT_SIZE, p.y);
                 }

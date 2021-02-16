@@ -7,29 +7,31 @@ import CI646.tracker.Vehicle.DIR;
 
 public class VehicleFactory {
 
-    public static final int MAX_X = 300;
-    public static final int MAX_Y = 300;
+	public static final int MAX_X = 300;
+	public static final int MAX_Y = 300;
+	public static final int MAX_N = 10;
 
-    public static ConcurrentMap<String, Vehicle> getVehicles(int numVehicles) {
-        ConcurrentMap<String, Vehicle> result = new ConcurrentHashMap<String, Vehicle>();
-        String prefix = "VEHICLE";
-        String name;
-        for(int i = 0; i < numVehicles; i++) {
-            name = prefix + i;
-            Vehicle p = randomPointNearBottom();
-            result.put(name, p);
-        }
-        return result;
-    }
+	public static final String PREFIX = "VEHICLE";
 
-    private static Vehicle randomPointNearBottom() {
-        int randX = ThreadLocalRandom.current().nextInt(0, MAX_X);
-        int randY = ThreadLocalRandom.current().nextInt(MAX_Y-30, MAX_Y);
-        return new Vehicle(randX, randY, randomDir(), randomDir());
-    }
+	public static ConcurrentMap<String, Vehicle> getVehicles(int numVehicles) {
+		ConcurrentMap<String, Vehicle> result = new ConcurrentHashMap<String, Vehicle>();
+		
+		for (int i = 0; i < numVehicles; i++) {
+			Vehicle p = randomPointNearBottom();
+			result.put(PREFIX + i, p);
+		}
 
-    private static DIR randomDir() {
-        int toss = ThreadLocalRandom.current().nextInt(2);
-        return toss == 0 ? DIR.NEG : DIR.POS;
-    }
+		return result;
+	}
+
+	private static Vehicle randomPointNearBottom() {
+		int x = ThreadLocalRandom.current().nextInt(0, MAX_X);
+		int y = ThreadLocalRandom.current().nextInt(MAX_Y - 30, MAX_Y);
+
+		return new Vehicle(x, y, randomDir(), randomDir());
+	}
+
+	private static DIR randomDir() {
+		return ThreadLocalRandom.current().nextInt(2) == 0 ? DIR.NEG : DIR.POS;
+	}
 }

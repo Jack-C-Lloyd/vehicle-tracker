@@ -16,8 +16,8 @@ public class GPSReceiver extends Receiver {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Vehicle v = tracker.getLocation(trackedID);
-            tracker.setLocation(trackedID, v.move());
+            Vehicle v = tracker.getLocation(id);
+            tracker.setLocation(id, v.move());
         }
     }
 }

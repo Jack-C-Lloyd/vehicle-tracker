@@ -4,14 +4,14 @@ import static CI646.tracker.VehicleFactory.MAX_X;
 import static CI646.tracker.VehicleFactory.MAX_Y;
 
 public class Vehicle {
-    public final int x, y;
-    public final DIR xdir, ydir;
-    private static final int STEP = 1;
+	public final int x, y;
+	public final DIR xdir, ydir;
+	private static final int STEP = 1;
 
-    public enum DIR {
-        POS(1),
-        NEG(-1);
-        private final int value;
+	public enum DIR {
+		POS(1),
+		NEG(-1);
+		private final int value;
 
         private DIR(int value) {
             this.value = value;
